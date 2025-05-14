@@ -22,6 +22,7 @@
   <input type="email" id="email" placeholder="Email" required>
   <input type="password" id="password" placeholder="Password" required>
   <button onclick="login()">Login</button>
+  <button onclick="register()">Register</button>
 </div>
 
 <script>
@@ -37,7 +38,6 @@
   };
 
   firebase.initializeApp(firebaseConfig);
-
   const auth = firebase.auth();
 
   function login() {
@@ -47,10 +47,28 @@
 
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        window.location.href = "https://lynk.id/ramean.id"; // URL tujuan setelah login
+        if (userCredential.user.disabled) {
+          error.textContent = "Akun belum diaktifkan oleh admin.";
+        } else {
+          window.location.href = "https://lynk.id/ramean.id";
+        }
       })
-      .catch((error) => {
+      .catch(() => {
         error.textContent = "Email atau password salah!";
+      });
+  }
+
+  function register() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const error = document.getElementById('error');
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        error.textContent = "Registrasi berhasil. Tunggu persetujuan admin.";
+      })
+      .catch(() => {
+        error.textContent = "Gagal mendaftar. Cek kembali email dan password.";
       });
   }
 </script>
