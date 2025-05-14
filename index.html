@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>Login Portofolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <!-- Firebase SDK Versi 8.9.1 -->
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
   <style>
     body { font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(#2c3e50, #3498db); margin: 0; }
     .login-box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.3); width: 300px; }
@@ -27,19 +28,21 @@
 
 <script>
   // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCFhmJGLN41yvkCNV39_MAsSH6H56tUMAs",
-    authDomain: "login-9e385.firebaseapp.com",
-    projectId: "login-9e385",
-    storageBucket: "login-9e385.firebasestorage.app",
-    messagingSenderId: "37695022365",
-    appId: "1:37695022365:web:5fa2d03110c0b8b513edf4",
-    measurementId: "G-0FEJSTLRHJ"
+  var firebaseConfig = {
+    apiKey: "AIzaSyCFhmJGLN41yvkCNV39_MAsSH6H56tUMAs",  // Ganti dengan API key yang valid
+    authDomain: "login-9e385.firebaseapp.com",  // Ganti dengan authDomain dari Firebase Console
+    projectId: "login-9e385",  // Ganti dengan project ID Firebase kamu
+    storageBucket: "login-9e385.firebasestorage.app",  // Ganti dengan bucket storage Firebase
+    messagingSenderId: "37695022365",  // Ganti dengan sender ID
+    appId: "1:37695022365:web:5fa2d03110c0b8b513edf4",  // Ganti dengan app ID Firebase
+    measurementId: "G-0FEJSTLRHJ"  // Ganti dengan measurement ID jika ada
   };
 
+  // Inisialisasi Firebase
   firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+  var auth = firebase.auth();
 
+  // Fungsi Login
   function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -50,7 +53,7 @@
         if (userCredential.user.disabled) {
           error.textContent = "Akun belum diaktifkan oleh admin.";
         } else {
-          window.location.href = "https://lynk.id/ramean.id";
+          window.location.href = "https://lynk.id/ramean.id";  // Ganti dengan URL tujuan setelah login
         }
       })
       .catch(() => {
@@ -58,6 +61,7 @@
       });
   }
 
+  // Fungsi Register
   function register() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
