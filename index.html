@@ -7,7 +7,10 @@
   <!-- Firebase SDK Versi 8.9.1 -->
   <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+
   <style>
+    /* CSS Styling */
     body { font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(#2c3e50, #3498db); margin: 0; }
     .login-box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.3); width: 300px; }
     input[type="email"], input[type="password"] { width: 100%; padding: 10px; margin-top: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; }
@@ -27,22 +30,23 @@
 </div>
 
 <script>
-  // Firebase config
+  // Firebase Configuration
   var firebaseConfig = {
-    apiKey: "AIzaSyCFhmJGLN41yvkCNV39_MAsSH6H56tUMAs",  // Ganti dengan API key yang valid
-    authDomain: "login-9e385.firebaseapp.com",  // Ganti dengan authDomain dari Firebase Console
-    projectId: "login-9e385",  // Ganti dengan project ID Firebase kamu
-    storageBucket: "login-9e385.firebasestorage.app",  // Ganti dengan bucket storage Firebase
-    messagingSenderId: "37695022365",  // Ganti dengan sender ID
-    appId: "1:37695022365:web:5fa2d03110c0b8b513edf4",  // Ganti dengan app ID Firebase
-    measurementId: "G-0FEJSTLRHJ"  // Ganti dengan measurement ID jika ada
+    apiKey: "AIzaSyCFhmJGLN41yvkCNV39_MAsSH6H56tUMAs",
+    authDomain: "login-9e385.firebaseapp.com",
+    projectId: "login-9e385",
+    storageBucket: "login-9e385.firebasestorage.app",
+    messagingSenderId: "37695022365",
+    appId: "1:37695022365:web:5fa2d03110c0b8b513edf4",
+    measurementId: "G-0FEJSTLRHJ"
   };
 
-  // Inisialisasi Firebase
+  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   var auth = firebase.auth();
+  var db = firebase.firestore();
 
-  // Fungsi Login
+  // Login Function
   function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -53,7 +57,7 @@
         if (userCredential.user.disabled) {
           error.textContent = "Akun belum diaktifkan oleh admin.";
         } else {
-          window.location.href = "https://lynk.id/ramean.id";  // Ganti dengan URL tujuan setelah login
+          window.location.href = "https://lynk.id/ramean.id";
         }
       })
       .catch(() => {
@@ -61,19 +65,21 @@
       });
   }
 
-  // Fungsi Register
+  // Register Function
   function register() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const error = document.getElementById('error');
 
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        error.textContent = "Registrasi berhasil. Tunggu persetujuan admin.";
-      })
-      .catch(() => {
-        error.textContent = "Gagal mendaftar. Cek kembali email dan password.";
-      });
+    // Add user data to Firestore
+    db.collection("user").add({
+      email: email,
+      status: "pending"
+    }).then(() => {
+      error.textContent = "Registrasi berhasil. Tunggu persetujuan admin.";
+    }).catch(() => {
+      error.textContent = "Gagal mendaftar. Cek kembali email dan password.";
+    });
   }
 </script>
 
