@@ -52,23 +52,23 @@
     const password = document.getElementById('password').value;
     const error = document.getElementById('error');
 
-    // Login with Firebase Authentication
     auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // Check user status in Firestore
-        db.collection("user").where("email", "==", email).get().then((querySnapshot) => {
-          if (!querySnapshot.empty) {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().status === "approved") {
-                window.location.href = "https://lynk.id/ramean.id"; // Redirect jika approved
-              } else {
-                error.textContent = "Akun belum disetujui oleh admin.";
-              }
-            });
-          } else {
-            error.textContent = "Akun tidak ditemukan.";
-          }
-        });
+        // Cek status user di Firestore
+        db.collection("user").where("email", "==", email).get()
+          .then((querySnapshot) => {
+            if (querySnapshot.empty) {
+              error.textContent = "Akun tidak ditemukan.";
+            } else {
+              querySnapshot.forEach((doc) => {
+                if (doc.data().status === "approved") {
+                  window.location.href = "https://lynk.id/ramean.id";
+                } else {
+                  error.textContent = "Akun belum diaktifkan oleh admin.";
+                }
+              });
+            }
+          });
       })
       .catch(() => {
         error.textContent = "Email atau password salah!";
@@ -81,7 +81,7 @@
     const password = document.getElementById('password').value;
     const error = document.getElementById('error');
 
-    // Add user data to Firestore with status 'pending'
+    // Add user data to Firestore
     db.collection("user").add({
       email: email,
       status: "pending"
