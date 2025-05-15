@@ -81,15 +81,19 @@
     const password = document.getElementById('password').value;
     const error = document.getElementById('error');
 
-    // Add user data to Firestore
-    db.collection("user").add({
-      email: email,
-      status: "pending"
-    }).then(() => {
-      error.textContent = "Registrasi berhasil. Tunggu persetujuan admin.";
-    }).catch(() => {
-      error.textContent = "Gagal mendaftar. Cek kembali email dan password.";
-    });
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Add user data to Firestore
+        db.collection("user").add({
+          email: email,
+          status: "pending"
+        }).then(() => {
+          error.textContent = "Registrasi berhasil. Tunggu persetujuan admin.";
+        });
+      })
+      .catch(() => {
+        error.textContent = "Gagal mendaftar. Cek kembali email dan password.";
+      });
   }
 </script>
 
