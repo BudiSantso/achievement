@@ -58,7 +58,8 @@
         db.collection("user").where("email", "==", email).get()
           .then((querySnapshot) => {
             if (querySnapshot.empty) {
-              error.textContent = "Akun tidak ditemukan.";
+              // Jika tidak ada di Firestore, anggap approved
+              window.location.href = "https://lynk.id/ramean.id";
             } else {
               querySnapshot.forEach((doc) => {
                 if (doc.data().status === "approved") {
